@@ -9,6 +9,7 @@ import CriticalHit from "./other damage components/criticalhit";
 import Burned from "./other damage components/burned";
 import PokemonField from "./pokemon properties/PokemonField";
 import AbilityDropdown from "./pokemon properties/AbilityDropdown";
+import StatChanges from "./other damage components/StatChanges";
 
 function Pokemon() {
     const [pokemonData, setPokemonData] = useState();
@@ -26,6 +27,7 @@ function Pokemon() {
                 </Col>
             </Row>
             <AbilityDropdown pokemonData={pokemonData}/>
+            <StatChanges />
             <ItemField />
             <Level />
             <CriticalHit />

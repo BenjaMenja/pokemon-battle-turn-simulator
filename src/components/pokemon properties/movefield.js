@@ -48,7 +48,7 @@ function MoveField(props) {
     return (
         <>
             <Form>
-                <Input type={"text"} value={moveInput} placeholder={"Move Search"} onChange={(e) => {
+                <Input type={"text"} value={moveInput} placeholder={"Move Search"} style={{width: '75%', marginLeft: '12.5%'}} onChange={(e) => {
                     setMoveInput(e.currentTarget.value)
                     if (props.moveData !== undefined) {
                         matchingMoves.current = filterFunction(props.moveData.moves, e.currentTarget.value.toLowerCase().replace(/ /g, "-"))

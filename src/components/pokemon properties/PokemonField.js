@@ -8,9 +8,9 @@ function PokemonField(props) {
 
     return (
         <>
-            <h1>
+            <h3>
                 Pokemon Name: {name}
-            </h1>
+            </h3>
             <img alt="" src={sprite} id={"sprite"} />
             <input type={"text"} value={textValue} onChange={(e) => {
                 setTextValue(e.currentTarget.value);

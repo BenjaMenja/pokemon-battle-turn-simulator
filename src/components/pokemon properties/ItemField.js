@@ -8,7 +8,7 @@ function ItemField() {
     const [itemData, setItemData] = useState();
     return (
         <>
-            <h1>Item Name: {name}</h1>
+            <h3>Item Name: {name}</h3>
             <img alt="" src={sprite} id={"sprite"} />
             <input type={"text"} value={textValue} onChange={(e) => {
                 setTextValue(e.currentTarget.value);

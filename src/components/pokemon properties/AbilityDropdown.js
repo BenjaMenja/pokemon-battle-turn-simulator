@@ -48,7 +48,7 @@ function AbilityDropdown(props) {
     }}>{heading}</DropdownItem>)
     return (
         <>
-            <h1>Ability Name: {ability}</h1>
+            <h3>Ability Name: {ability}</h3>
             <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
                 <DropdownToggle caret>
                     Ability
