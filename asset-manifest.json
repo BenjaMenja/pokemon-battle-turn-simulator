@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/pokemon-battle-turn-simulator/static/css/main.33f5093c.css",
+    "main.js": "/pokemon-battle-turn-simulator/static/js/main.de23794d.js",
+    "static/js/787.840d071c.chunk.js": "/pokemon-battle-turn-simulator/static/js/787.840d071c.chunk.js",
+    "index.html": "/pokemon-battle-turn-simulator/index.html",
+    "main.33f5093c.css.map": "/pokemon-battle-turn-simulator/static/css/main.33f5093c.css.map",
+    "main.de23794d.js.map": "/pokemon-battle-turn-simulator/static/js/main.de23794d.js.map",
+    "787.840d071c.chunk.js.map": "/pokemon-battle-turn-simulator/static/js/787.840d071c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.33f5093c.css",
+    "static/js/main.de23794d.js"
+  ]
+}
