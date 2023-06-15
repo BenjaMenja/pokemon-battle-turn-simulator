@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 
-function Level() {
+function Level(props) {
     const [value, setValue] = useState(1)
 
     useEffect(() => {
@@ -15,7 +15,8 @@ function Level() {
         <>
             <h3>Level</h3>
             <input type={"number"} value={value} onChange={(e) => {
-                setValue(parseInt(e.currentTarget.value));
+                setValue(parseInt(e.currentTarget.value))
+                props.PokemonValues.current.level = parseInt(e.currentTarget.value)
             }}></input>
         </>
     )

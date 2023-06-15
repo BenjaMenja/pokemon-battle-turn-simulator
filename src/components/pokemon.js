@@ -10,28 +10,30 @@ import Burned from "./other damage components/burned";
 import PokemonField from "./pokemon properties/PokemonField";
 import AbilityDropdown from "./pokemon properties/AbilityDropdown";
 import StatChanges from "./other damage components/StatChanges";
+import NatureDropdown from "./pokemon properties/NatureDropdown";
 
-function Pokemon() {
+function Pokemon(props) {
     const [pokemonData, setPokemonData] = useState();
 
     return (
         <div>
-            <PokemonField setData={setPokemonData} />
-            <MoveField moveData={pokemonData} />
+            <PokemonField setData={setPokemonData} PokemonValues={props.PokemonValues}/>
+            <MoveField moveData={pokemonData} MoveProperties={props.MoveProperties}/>
             <Row xs={'2'}>
                 <Col>
-                    <EffortValues />
+                    <EffortValues EVs={props.EVs}/>
                 </Col>
                 <Col>
-                    <IndividualValues />
+                    <IndividualValues IVs={props.IVs}/>
                 </Col>
             </Row>
-            <AbilityDropdown pokemonData={pokemonData}/>
-            <StatChanges />
-            <ItemField />
-            <Level />
-            <CriticalHit />
-            <Burned />
+            <AbilityDropdown pokemonData={pokemonData} PokemonValues={props.PokemonValues} />
+            <NatureDropdown PokemonValues={props.PokemonValues} />
+            <StatChanges StatChanges={props.StatChanges} />
+            <ItemField PokemonValues={props.PokemonValues} />
+            <Level PokemonValues={props.PokemonValues} />
+            <CriticalHit PokemonValues={props.PokemonValues} />
+            <Burned PokemonValues={props.PokemonValues} />
         </div>
     )
 }

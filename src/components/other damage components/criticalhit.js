@@ -1,9 +1,13 @@
 import {Input, Label} from "reactstrap";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
-function CriticalHit() {
+function CriticalHit(props) {
 
     const [crit, setCrit] = useState(false)
+
+    useEffect(() => {
+        props.PokemonValues.current.isCriticalHit = crit
+    }, [crit])
 
     return (
         <>

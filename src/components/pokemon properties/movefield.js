@@ -57,7 +57,7 @@ function MoveField(props) {
                     console.log(uppercaseMoves.current)
                 }}></Input>
             </Form>
-            <MoveDropdown moves={uppercaseMoves.current} update={updater} setUpdate={setUpdater} setMoveInput={setMoveInput}/>
+            <MoveDropdown moves={uppercaseMoves.current} update={updater} setUpdate={setUpdater} setMoveInput={setMoveInput} MoveProperties={props.MoveProperties}/>
         </>
     )
 }

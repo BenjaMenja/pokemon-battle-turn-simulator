@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {Button} from "reactstrap";
 
-function ItemField() {
+function ItemField(props) {
     const [name, setName] = useState("");
     const [sprite, setSprite] = useState();
     const [textValue, setTextValue] = useState("");
@@ -18,10 +18,12 @@ function ItemField() {
                 let link = "https://pokeapi.co/api/v2/item/" + inputName + "/"
                 fetch(link).then((response) => response.json()).then((data) => {
                     setItemData(data)
+                    props.PokemonValues.current.item = data.name
                     setName(data.name[0].toUpperCase() + data.name.substring(1))
                     setSprite(data.sprites.default)
                 }).catch((err) => {
                     setItemData(undefined)
+                    props.PokemonValues.current.item = ''
                     setName("")
                     window.alert("Error, Item not found.")
                     setSprite(null)

@@ -45,6 +45,7 @@ function AbilityDropdown(props) {
     const toggleDropdown = () => setDropdownOpen((prevState) => !prevState)
     const mapabilities = () => (props.pokemonData === null || props.pokemonData === undefined) ? null : uppercaseAbilityArray.current.map((heading, index) => <DropdownItem onClick={() => {
         setAbility(heading)
+        props.PokemonValues.current.ability = heading
     }}>{heading}</DropdownItem>)
     return (
         <>

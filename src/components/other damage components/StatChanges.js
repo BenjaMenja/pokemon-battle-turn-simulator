@@ -1,7 +1,7 @@
 import {useState} from "react";
 import StatChangeInput from "./StatChangeInput";
 
-function StatChanges() {
+function StatChanges(props) {
     const [Attack, setAttack] = useState(0)
     const [Defense, setDefense] = useState(0)
     const [SpAtk, setSpAtk] = useState(0)
@@ -12,13 +12,13 @@ function StatChanges() {
     return (
         <>
             <h3>Stat Changes</h3>
-            <StatChangeInput inputvalue={Attack} setInputValue={setAttack} />
-            <StatChangeInput inputvalue={Defense} setInputValue={setDefense} />
-            <StatChangeInput inputvalue={SpAtk} setInputValue={setSpAtk} />
-            <StatChangeInput inputvalue={SpDef} setInputValue={setSpDef} />
-            <StatChangeInput inputvalue={Speed} setInputValue={setSpeed} />
-            <StatChangeInput inputvalue={Accuracy} setInputValue={setAccuracy} />
-            <StatChangeInput inputvalue={Evasion} setInputValue={setEvasion} />
+            <StatChangeInput stat={'attack'} inputvalue={Attack} setInputValue={setAttack} StatChanges={props.StatChanges}/>
+            <StatChangeInput stat={'defense'} inputvalue={Defense} setInputValue={setDefense} StatChanges={props.StatChanges}/>
+            <StatChangeInput stat={'spatk'} inputvalue={SpAtk} setInputValue={setSpAtk} StatChanges={props.StatChanges}/>
+            <StatChangeInput stat={'spdef'} inputvalue={SpDef} setInputValue={setSpDef} StatChanges={props.StatChanges}/>
+            <StatChangeInput stat={'speed'} inputvalue={Speed} setInputValue={setSpeed} StatChanges={props.StatChanges}/>
+            <StatChangeInput stat={'accuracy'} inputvalue={Accuracy} setInputValue={setAccuracy} StatChanges={props.StatChanges}/>
+            <StatChangeInput stat={'evasion'} inputvalue={Evasion} setInputValue={setEvasion} StatChanges={props.StatChanges}/>
         </>
     )
 }
