@@ -1,6 +1,15 @@
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from "reactstrap";
 import {useEffect, useState} from "react";
 
+function uppercaseFormat(word) {
+    const words = word.split("-")
+    for (let i=0; i < words.length; i++) {
+        words[i] = words[i][0].toUpperCase() + words[i].substring(1)
+    }
+
+    return words.join(" ")
+}
+
 function MoveDropdown(props) {
     const moves = props.moves
     const updater = props.update
@@ -22,7 +31,7 @@ function MoveDropdown(props) {
 
             props.MoveProperties.current.type = data.type.name
             props.MoveProperties.current.category = data.damage_class.name
-            props.MoveProperties.current.name = url
+            props.MoveProperties.current.name = uppercaseFormat(url)
         }).catch((err) => {
             window.alert('Error, invalid move.')
             props.MoveProperties.current.name = ''

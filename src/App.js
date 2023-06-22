@@ -14,7 +14,7 @@ function App() {
         spatk: 0,
         spdef: 0,
         speed: 0,
-        type1: '',
+        type: '',
         type2: '',
         ability: '',
         item: '',
@@ -112,6 +112,8 @@ function App() {
         speed: 0,
     })
 
+    const Weather = useRef("")
+
   return (
     <div className="App">
       <header className="App-header">
@@ -121,8 +123,8 @@ function App() {
                   <Pokemon PokemonValues={PokemonValuesLeft} StatChanges={StatChangesLeft} MoveProperties={MovePropertiesLeft} EVs={EVsLeft} IVs={IVsLeft}/>
               </Col>
               <Col>
-                  <UniversalDamageComponents />
-                  <DamageCalculator PokemonValuesLeft={PokemonValuesLeft.current} PokemonValuesRight={PokemonValuesRight.current} StatChangesLeft={StatChangesLeft.current} StatChangesRight={StatChangesRight.current} MovePropertiesLeft={MovePropertiesLeft.current} MovePropertiesRight={MovePropertiesRight.current} EVsLeft={EVsLeft.current} EVsRight={EVsRight.current} IVsLeft={IVsLeft.current} IVsRight={IVsRight.current}/>
+                  <UniversalDamageComponents Weather={Weather}/>
+                  <DamageCalculator PokemonValuesLeft={PokemonValuesLeft.current} PokemonValuesRight={PokemonValuesRight.current} StatChangesLeft={StatChangesLeft.current} StatChangesRight={StatChangesRight.current} MovePropertiesLeft={MovePropertiesLeft.current} MovePropertiesRight={MovePropertiesRight.current} EVsLeft={EVsLeft.current} EVsRight={EVsRight.current} IVsLeft={IVsLeft.current} IVsRight={IVsRight.current} Weather={Weather}/>
               </Col>
               <Col>
                   <Pokemon PokemonValues={PokemonValuesRight} StatChanges={StatChangesRight} MoveProperties={MovePropertiesRight} EVs={EVsRight} IVs={IVsRight}/>

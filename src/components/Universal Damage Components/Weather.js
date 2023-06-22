@@ -2,7 +2,7 @@ import {useState} from "react";
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from "reactstrap";
 
 
-function WeatherInput() {
+function WeatherInput(props) {
 
     const [weather, setWeather] = useState("None")
     const [dropdownOpen, setDropdownOpen] = useState(false)
@@ -16,7 +16,10 @@ function WeatherInput() {
                     Weather
                 </DropdownToggle>
                 <DropdownMenu>
-                    {weathers.map((heading, index) => <DropdownItem onClick={() => {setWeather(heading)}}>{heading}</DropdownItem>)}
+                    {weathers.map((heading, index) => <DropdownItem onClick={() => {
+                        setWeather(heading)
+                        props.Weather.current = heading
+                    }}>{heading}</DropdownItem>)}
                 </DropdownMenu>
             </Dropdown>
         </>
