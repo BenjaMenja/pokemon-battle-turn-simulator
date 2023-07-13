@@ -1,5 +1,6 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import IndividualValueInput from "./IndividualValueInput";
+import {calculateMaxHP} from "../../utils/utilities";
 
 function IndividualValues(props) {
     const [HP, setHP] = useState(0)
@@ -8,6 +9,11 @@ function IndividualValues(props) {
     const [SpAtk, setSpAtk] = useState(0)
     const [SpDef, setSpDef] = useState(0)
     const [Speed, setSpeed] = useState(0)
+
+    useEffect(() => {
+        props.SetHPUpdater((prevState) => !prevState)
+        props.PokemonValues.maxHP = calculateMaxHP(props.PokemonValues.HP, props.EVs.HP, HP, props.PokemonValues.level)
+    }, [HP])
 
     return(
         <>

@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Col, Row} from "reactstrap";
+import {Button, Col, Row} from "reactstrap";
 import MoveField from "./pokemon properties/movefield";
 import EffortValues from "./pokemon properties/EffortValues";
 import IndividualValues from "./pokemon properties/IndividualValues";
@@ -11,30 +11,44 @@ import PokemonField from "./pokemon properties/PokemonField";
 import AbilityDropdown from "./pokemon properties/AbilityDropdown";
 import StatChanges from "./other damage components/StatChanges";
 import NatureDropdown from "./pokemon properties/NatureDropdown";
+import OtherFlags from "./other damage components/OtherFlags";
+import CurrentHealth from "./pokemon properties/CurrentHealth";
 
 function Pokemon(props) {
-    const [pokemonData, setPokemonData] = useState();
+    const [pokemonData, setPokemonData] = useState()
+    const [visibleValues, setVisibleValues] = useState(false)
+    const toggle = () => setVisibleValues((prevState) => !prevState)
+    const [HPUpdater, SetHPUpdater] = useState(false)
 
     return (
-        <div>
-            <PokemonField setData={setPokemonData} PokemonValues={props.PokemonValues}/>
+        <>
+            <PokemonField setData={setPokemonData} PokemonValues={props.PokemonValues.current} EVs={props.EVs.current} IVs={props.IVs.current}/>
             <MoveField moveData={pokemonData} MoveProperties={props.MoveProperties}/>
-            <Row xs={'2'}>
+            <CurrentHealth PokemonValues={props.PokemonValues.current} HPUpdater={HPUpdater} SetHPUpdater={SetHPUpdater}/>
+            <Button onClick={toggle} color={'primary'}>EV / IV Values</Button>
+            {visibleValues && <Row xs={'2'}>
                 <Col>
-                    <EffortValues EVs={props.EVs}/>
+                    <EffortValues EVs={props.EVs.current} PokemonValues={props.PokemonValues.current} IVs={props.IVs.current} HPUpdater={HPUpdater} SetHPUpdater={SetHPUpdater}/>
                 </Col>
                 <Col>
-                    <IndividualValues IVs={props.IVs}/>
+                    <IndividualValues IVs={props.IVs.current} EVs={props.EVs.current} PokemonValues={props.PokemonValues.current} HPUpdater={HPUpdater} SetHPUpdater={SetHPUpdater} />
                 </Col>
-            </Row>
+            </Row>}
             <AbilityDropdown pokemonData={pokemonData} PokemonValues={props.PokemonValues} />
             <NatureDropdown PokemonValues={props.PokemonValues} />
             <StatChanges StatChanges={props.StatChanges} />
             <ItemField PokemonValues={props.PokemonValues} />
-            <Level PokemonValues={props.PokemonValues} />
-            <CriticalHit PokemonValues={props.PokemonValues} />
-            <Burned PokemonValues={props.PokemonValues} />
-        </div>
+            <Level PokemonValues={props.PokemonValues.current} EVs={props.EVs.current} IVs={props.IVs.current} HPUpdater={HPUpdater} SetHPUpdater={SetHPUpdater} />
+            <Row xs={'2'}>
+                <Col>
+                    <CriticalHit PokemonValues={props.PokemonValues} />
+                </Col>
+                <Col>
+                    <Burned PokemonValues={props.PokemonValues} />
+                </Col>
+            </Row>
+            <OtherFlags OtherFlags={props.OtherFlags}/>
+        </>
     )
 }
 

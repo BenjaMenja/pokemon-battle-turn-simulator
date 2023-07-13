@@ -20,7 +20,9 @@ function App() {
         item: '',
         nature: '',
         isCriticalHit: false,
-        burned: false
+        burned: false,
+        currentHP: 0,
+        maxHP: 0
     })
 
     const PokemonValuesRight = useRef({
@@ -37,7 +39,9 @@ function App() {
         item: '',
         nature: '',
         isCriticalHit: false,
-        burned: false
+        burned: false,
+        currentHP: 0,
+        maxHP: 0
     })
 
     const StatChangesLeft = useRef({
@@ -112,22 +116,40 @@ function App() {
         speed: 0,
     })
 
+    const OtherFlagsLeft = useRef({
+        minimize: false,
+        dig: false,
+        dive: false,
+        reflect: false,
+        lightscreen: false,
+        auroraveil: false
+    })
+
+    const OtherFlagsRight = useRef({
+        minimize: false,
+        dig: false,
+        dive: false,
+        reflect: false,
+        lightscreen: false,
+        auroraveil: false
+    })
+
     const Weather = useRef("")
 
   return (
     <div className="App">
       <header className="App-header">
-          <Button onClick={() => console.log(MovePropertiesLeft)} />
+          <Button onClick={() => console.log(PokemonValuesLeft)} />
           <Row xs={'3'}>
               <Col>
-                  <Pokemon PokemonValues={PokemonValuesLeft} StatChanges={StatChangesLeft} MoveProperties={MovePropertiesLeft} EVs={EVsLeft} IVs={IVsLeft}/>
+                  <Pokemon PokemonValues={PokemonValuesLeft} StatChanges={StatChangesLeft} MoveProperties={MovePropertiesLeft} EVs={EVsLeft} IVs={IVsLeft} OtherFlags={OtherFlagsLeft.current}/>
               </Col>
               <Col>
                   <UniversalDamageComponents Weather={Weather}/>
-                  <DamageCalculator PokemonValuesLeft={PokemonValuesLeft.current} PokemonValuesRight={PokemonValuesRight.current} StatChangesLeft={StatChangesLeft.current} StatChangesRight={StatChangesRight.current} MovePropertiesLeft={MovePropertiesLeft.current} MovePropertiesRight={MovePropertiesRight.current} EVsLeft={EVsLeft.current} EVsRight={EVsRight.current} IVsLeft={IVsLeft.current} IVsRight={IVsRight.current} Weather={Weather}/>
+                  <DamageCalculator PokemonValuesLeft={PokemonValuesLeft.current} PokemonValuesRight={PokemonValuesRight.current} StatChangesLeft={StatChangesLeft.current} StatChangesRight={StatChangesRight.current} MovePropertiesLeft={MovePropertiesLeft.current} MovePropertiesRight={MovePropertiesRight.current} EVsLeft={EVsLeft.current} EVsRight={EVsRight.current} IVsLeft={IVsLeft.current} IVsRight={IVsRight.current} OtherFlagsLeft={OtherFlagsLeft.current} OtherFlagsRight={OtherFlagsRight.current} Weather={Weather}/>
               </Col>
               <Col>
-                  <Pokemon PokemonValues={PokemonValuesRight} StatChanges={StatChangesRight} MoveProperties={MovePropertiesRight} EVs={EVsRight} IVs={IVsRight}/>
+                  <Pokemon PokemonValues={PokemonValuesRight} StatChanges={StatChangesRight} MoveProperties={MovePropertiesRight} EVs={EVsRight} IVs={IVsRight} OtherFlags={OtherFlagsRight.current}/>
               </Col>
           </Row>
       </header>

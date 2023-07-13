@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import EffortValueInput from "./EffortValueInput";
+import {calculateMaxHP} from "../../utils/utilities";
 
 function EffortValues(props) {
     const maxEVs = 510
@@ -15,42 +16,44 @@ function EffortValues(props) {
     useEffect(() => {
         if (statSum() > maxEVs) {
             setHP(HP - (statSum() - maxEVs))
-            props.EVs.current.HP = HP - (statSum() - maxEVs)
+            props.EVs.HP = HP - (statSum() - maxEVs)
         }
+        props.SetHPUpdater((prevState) => !prevState)
+        props.PokemonValues.maxHP = calculateMaxHP(props.PokemonValues.HP, HP, props.IVs.HP, props.PokemonValues.level)
     }, [HP])
 
     useEffect(() => {
         if (statSum() > maxEVs) {
             setAttack(Attack - (statSum() - maxEVs))
-            props.EVs.current.attack = Attack - (statSum() - maxEVs)
+            props.EVs.attack = Attack - (statSum() - maxEVs)
         }
     }, [Attack])
 
     useEffect(() => {
         if (statSum() > maxEVs) {
             setDefense(Defense - (statSum() - maxEVs))
-            props.EVs.current.defense = Defense - (statSum() - maxEVs)
+            props.EVs.defense = Defense - (statSum() - maxEVs)
         }
     }, [Defense])
 
     useEffect(() => {
         if (statSum() > maxEVs) {
             setSpAtk(SpAtk - (statSum() - maxEVs))
-            props.EVs.current.spatk = SpAtk - (statSum() - maxEVs)
+            props.EVs.spatk = SpAtk - (statSum() - maxEVs)
         }
     }, [SpAtk])
 
     useEffect(() => {
         if (statSum() > maxEVs) {
             setSpDef(SpDef - (statSum() - maxEVs))
-            props.EVs.current.spdef = SpDef - (statSum() - maxEVs)
+            props.EVs.spdef = SpDef - (statSum() - maxEVs)
         }
     }, [SpDef])
 
     useEffect(() => {
         if (statSum() > maxEVs) {
             setSpeed(Speed - (statSum() - maxEVs))
-            props.EVs.current.speed = Speed - (statSum() - maxEVs)
+            props.EVs.speed = Speed - (statSum() - maxEVs)
         }
     }, [Speed])
 

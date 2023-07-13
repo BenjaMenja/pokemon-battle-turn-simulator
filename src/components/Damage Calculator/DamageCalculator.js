@@ -1,5 +1,5 @@
 
-function CalculateBasicDamage(PokemonValues, MoveProperties, StatChanges, EVs, IVs, OtherPokemonValues, OtherMoveProperties, OtherStatChanges, OtherEVs, OtherIVs, Weather) {
+function CalculateBasicDamage(PokemonValues, MoveProperties, StatChanges, EVs, IVs, Flags, OtherPokemonValues, OtherMoveProperties, OtherStatChanges, OtherEVs, OtherIVs, OtherFlags, Weather) {
     let levelcomponent = ((2 * PokemonValues.level) / 5) + 2
     let effectiveAttack = calculateEffectiveAttack(MoveProperties, PokemonValues, StatChanges, EVs, IVs)
     let effectiveDefense = calculateEffectiveDefense(MoveProperties, PokemonValues, OtherPokemonValues, OtherStatChanges, OtherEVs, OtherIVs)
@@ -7,6 +7,40 @@ function CalculateBasicDamage(PokemonValues, MoveProperties, StatChanges, EVs, I
     let STAB = SameTypeAttackBonus(PokemonValues.type, PokemonValues.type2, MoveProperties.type, PokemonValues.ability)
     let crit = () => {return (PokemonValues.isCriticalHit ? 1.5 : 1)}
     let weatherBoost = WeatherEffects(Weather, PokemonValues.ability, OtherPokemonValues.ability, MoveProperties.type, MoveProperties.name)
+    let other = () => {
+        let multiplier = 1
+        if (OtherFlags.minimize && (["Body Slam", "Stomp", "Dragon Rush", "Heat Crash", "Heavy Slam", "Flying Press"].includes(MoveProperties.name))) {
+            multiplier *= 2
+        }
+        if (OtherFlags.dig && ["Earthquake", "Magnitude"].includes(MoveProperties.name)) {
+            multiplier *= 2
+        }
+        if (OtherFlags.dive && ["Surf", "Whirlpool"].includes(MoveProperties.name)) {
+            multiplier *= 2
+        }
+        if (OtherFlags.lightscreen) {
+            if (MoveProperties.category === "Special" && !PokemonValues.isCriticalHit && (PokemonValues.ability !== "Infiltrator")) {
+                multiplier *= 0.5
+            }
+        }
+        if (OtherFlags.reflect) {
+            if (MoveProperties.category === "Physical" && !PokemonValues.isCriticalHit && (PokemonValues.ability !== "Infiltrator")) {
+                multiplier *= 0.5
+            }
+        }
+        if (OtherFlags.auroraveil) {
+            if (!PokemonValues.isCriticalHit && (PokemonValues.ability !== "Infiltrator")) {
+                multiplier *= 0.5
+            }
+        }
+        if (["Collision Course", "Electro Drift"].includes(MoveProperties.name) && (typeeffectiveness > 1)) {
+            multiplier *= (5461/4096) // 1.3333
+        }
+
+
+        return multiplier
+    }
+
 }
 
 function calculateEffectiveAttack(MoveProperties, PokemonValues, StatChanges, EVs, IVs) {
@@ -413,7 +447,7 @@ function WeatherEffects(Weather, PokemonAbility, OtherPokemonAbility, MoveType, 
 function DamageCalculator(props) {
     return (
         <>
-            {CalculateBasicDamage(props.PokemonValuesLeft, props.MovePropertiesLeft, props.StatChangesLeft, props.EVsLeft, props.IVsLeft, props.PokemonValuesRight, props.MovePropertiesRight, props.StatChangesRight, props.EVsRight, props.IVsRight, props.Weather)}
+            {CalculateBasicDamage(props.PokemonValuesLeft, props.MovePropertiesLeft, props.StatChangesLeft, props.EVsLeft, props.IVsLeft, props.OtherFlagsLeft, props.PokemonValuesRight, props.MovePropertiesRight, props.StatChangesRight, props.EVsRight, props.IVsRight, props.OtherFlagsRight, props.Weather)}
         </>
     )
 }
