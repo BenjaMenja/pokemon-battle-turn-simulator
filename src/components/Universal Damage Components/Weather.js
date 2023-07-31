@@ -7,7 +7,7 @@ function WeatherInput(props) {
     const [weather, setWeather] = useState("None")
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const toggleDropdown = () => setDropdownOpen((prevState) => !prevState)
-    let weathers = ["Rain", "Harsh Sunlight", "Sandstorm", "Snow", "Extremely Harsh Sunlight", "Heavy Rain", "Strong Winds"]
+    let weathers = ["None", "Rain", "Harsh Sunlight", "Sandstorm", "Snow", "Extremely Harsh Sunlight", "Heavy Rain", "Strong Winds"]
     return (
         <>
             <h3>Weather: {weather}</h3>

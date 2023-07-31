@@ -6,7 +6,7 @@ function TerrainInput() {
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const toggleDropdown = () => setDropdownOpen((prevState) => !prevState)
 
-    let terrains = ["Psychic", "Electric", "Misty", "Grassy"]
+    let terrains = ["None", "Psychic", "Electric", "Misty", "Grassy"]
 
     return (
         <>

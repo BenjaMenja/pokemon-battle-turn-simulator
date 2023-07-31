@@ -1,7 +1,7 @@
 import './App.css';
 import Pokemon from "./components/pokemon";
 import UniversalDamageComponents from "./components/UniversalDamageComponents";
-import {Button, Col, Row} from "reactstrap";
+import {Col, Row} from "reactstrap";
 import {useRef} from "react";
 import DamageCalculator from "./components/Damage Calculator/DamageCalculator";
 
@@ -139,7 +139,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-          <Button onClick={() => console.log(PokemonValuesLeft)} />
+          {/*<Button onClick={() => console.log(MovePropertiesLeft)} />*/}
           <Row xs={'3'}>
               <Col>
                   <Pokemon PokemonValues={PokemonValuesLeft} StatChanges={StatChangesLeft} MoveProperties={MovePropertiesLeft} EVs={EVsLeft} IVs={IVsLeft} OtherFlags={OtherFlagsLeft.current}/>
