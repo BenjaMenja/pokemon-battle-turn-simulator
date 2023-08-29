@@ -1,71 +1,86 @@
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import EffortValueInput from "./EffortValueInput";
-import {calculateMaxHP} from "../../utils/utilities";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    updateAttack,
+    updateDefense,
+    updateEVHP,
+    updateSpatk,
+    updateSpdef,
+    updateSpeed
+} from "../../features/stats/evSlice";
 
 function EffortValues(props) {
     const maxEVs = 510
-    const [HP, setHP] = useState(0)
-    const [Attack, setAttack] = useState(0)
-    const [Defense, setDefense] = useState(0)
-    const [SpAtk, setSpAtk] = useState(0)
-    const [SpDef, setSpDef] = useState(0)
-    const [Speed, setSpeed] = useState(0)
-
-    const statSum = () => {return HP + Attack + Defense + SpAtk + SpDef + Speed}
+    const evSumLeft = useSelector((state) => state.evs.evSumLeft)
+    const evSumRight = useSelector((state) => state.evs.evSumRight)
+    const evsLeft = useSelector((state) => state.evs.EVsLeft)
+    const evsRight = useSelector((state) => state.evs.EVsRight)
+    const dispatch = useDispatch()
 
     useEffect(() => {
-        if (statSum() > maxEVs) {
-            setHP(HP - (statSum() - maxEVs))
-            props.EVs.HP = HP - (statSum() - maxEVs)
+        if (evSumLeft > maxEVs) {
+            dispatch(updateEVHP(evsLeft.HP - (evSumLeft - maxEVs)))
         }
-        props.SetHPUpdater((prevState) => !prevState)
-        props.PokemonValues.maxHP = calculateMaxHP(props.PokemonValues.HP, HP, props.IVs.HP, props.PokemonValues.level)
-    }, [HP])
+        if (evSumRight > maxEVs) {
+            dispatch(updateEVHP(evsRight.HP - (evSumRight - maxEVs)))
+        }
+    }, [evsLeft.HP, evsRight.HP])
 
     useEffect(() => {
-        if (statSum() > maxEVs) {
-            setAttack(Attack - (statSum() - maxEVs))
-            props.EVs.attack = Attack - (statSum() - maxEVs)
+        if (evSumLeft > maxEVs) {
+            dispatch(updateAttack(evsLeft.attack - (evSumLeft - maxEVs)))
         }
-    }, [Attack])
+        if (evSumRight > maxEVs) {
+            dispatch(updateAttack(evsRight.attack - (evSumRight - maxEVs)))
+        }
+    }, [evsLeft.attack, evsRight.attack])
 
     useEffect(() => {
-        if (statSum() > maxEVs) {
-            setDefense(Defense - (statSum() - maxEVs))
-            props.EVs.defense = Defense - (statSum() - maxEVs)
+        if (evSumLeft > maxEVs) {
+            dispatch(updateDefense(evsLeft.defense - (evSumLeft - maxEVs)))
         }
-    }, [Defense])
+        if (evSumRight > maxEVs) {
+            dispatch(updateDefense(evsRight.defense - (evSumRight - maxEVs)))
+        }
+    }, [evsLeft.defense, evsRight.defense])
 
     useEffect(() => {
-        if (statSum() > maxEVs) {
-            setSpAtk(SpAtk - (statSum() - maxEVs))
-            props.EVs.spatk = SpAtk - (statSum() - maxEVs)
+        if (evSumLeft > maxEVs) {
+            dispatch(updateSpatk(evsLeft.spatk - (evSumLeft - maxEVs)))
         }
-    }, [SpAtk])
+        if (evSumRight > maxEVs) {
+            dispatch(updateSpatk(evsRight.spatk - (evSumRight - maxEVs)))
+        }
+    }, [evsLeft.spatk, evsRight.spatk])
 
     useEffect(() => {
-        if (statSum() > maxEVs) {
-            setSpDef(SpDef - (statSum() - maxEVs))
-            props.EVs.spdef = SpDef - (statSum() - maxEVs)
+        if (evSumLeft > maxEVs) {
+            dispatch(updateSpdef(evsLeft.spdef - (evSumLeft - maxEVs)))
         }
-    }, [SpDef])
+        if (evSumRight > maxEVs) {
+            dispatch(updateSpdef(evsRight.spdef - (evSumRight - maxEVs)))
+        }
+    }, [evsLeft.spdef, evsRight.spdef])
 
     useEffect(() => {
-        if (statSum() > maxEVs) {
-            setSpeed(Speed - (statSum() - maxEVs))
-            props.EVs.speed = Speed - (statSum() - maxEVs)
+        if (evSumLeft > maxEVs) {
+            dispatch(updateSpeed(evsLeft.speed - (evSumLeft - maxEVs)))
         }
-    }, [Speed])
+        if (evSumRight > maxEVs) {
+            dispatch(updateSpeed(evsRight.speed - (evSumRight - maxEVs)))
+        }
+    }, [evsLeft.speed, evsRight.speed])
 
     return (
         <>
             <h3>Effort Values</h3>
-            <EffortValueInput stat={'HP'} inputvalue={HP} setInputValue={setHP} EVs={props.EVs}/>
-            <EffortValueInput stat={'attack'} inputvalue={Attack} setInputValue={setAttack} EVs={props.EVs}/>
-            <EffortValueInput stat={'defense'} inputvalue={Defense} setInputValue={setDefense} EVs={props.EVs}/>
-            <EffortValueInput stat={'spatk'} inputvalue={SpAtk} setInputValue={setSpAtk} EVs={props.EVs}/>
-            <EffortValueInput stat={'spdef'} inputvalue={SpDef} setInputValue={setSpDef} EVs={props.EVs}/>
-            <EffortValueInput stat={'speed'} inputvalue={Speed} setInputValue={setSpeed} EVs={props.EVs}/>
+            <EffortValueInput stat={'HP'} side={props.side} />
+            <EffortValueInput stat={'attack'} side={props.side} />
+            <EffortValueInput stat={'defense'} side={props.side} />
+            <EffortValueInput stat={'spatk'} side={props.side} />
+            <EffortValueInput stat={'spdef'} side={props.side} />
+            <EffortValueInput stat={'speed'} side={props.side} />
         </>
     )
 }

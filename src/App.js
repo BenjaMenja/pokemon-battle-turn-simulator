@@ -1,68 +1,33 @@
 import './App.css';
 import Pokemon from "./components/pokemon";
 import UniversalDamageComponents from "./components/UniversalDamageComponents";
-import {Col, Row} from "reactstrap";
+import {Button, Col, Row} from "reactstrap";
 import {useRef} from "react";
 import DamageCalculator from "./components/Damage Calculator/DamageCalculator";
+import {useSelector} from "react-redux";
+import PokemonField from "./components/pokemon properties/PokemonField";
+import StatChanges from "./components/other damage components/StatChanges";
+import EffortValues from "./components/pokemon properties/EffortValues";
+import IndividualValues from "./components/pokemon properties/IndividualValues";
+import MoveField from "./components/pokemon properties/movefield";
+import CurrentHealth from "./components/pokemon properties/CurrentHealth";
+import AbilityDropdown from "./components/pokemon properties/AbilityDropdown";
+import NatureDropdown from "./components/pokemon properties/NatureDropdown";
+import ItemField from "./components/pokemon properties/ItemField";
 
 function App() {
-    const PokemonValuesLeft = useRef({
-        level: 1,
-        HP: 0,
-        attack: 0,
-        defense: 0,
-        spatk: 0,
-        spdef: 0,
-        speed: 0,
-        type: '',
-        type2: '',
-        ability: '',
-        item: '',
-        nature: '',
-        isCriticalHit: false,
-        burned: false,
-        currentHP: 0,
-        maxHP: 0
-    })
 
-    const PokemonValuesRight = useRef({
-        level: 1,
-        HP: 0,
-        attack: 0,
-        defense: 0,
-        spatk: 0,
-        spdef: 0,
-        speed: 0,
-        type: '',
-        type2: '',
-        ability: '',
-        item: '',
-        nature: '',
-        isCriticalHit: false,
-        burned: false,
-        currentHP: 0,
-        maxHP: 0
-    })
+    const PokemonValuesLeft = useSelector((state) => state.pokemon.PokemonValuesLeft)
+    const PokemonValuesRight = useSelector((state) => state.pokemon.PokemonValuesRight)
 
-    const StatChangesLeft = useRef({
-        attack: 0,
-        defense: 0,
-        spatk: 0,
-        spdef: 0,
-        speed: 0,
-        accuracy: 0,
-        evasion: 0
-    })
+    const StatChangesLeft = useSelector((state) => state.statChanges.StatChangesLeft)
+    const StatChangesRight = useSelector((state) => state.statChanges.StatChangesRight)
 
-    const StatChangesRight = useRef({
-        attack: 0,
-        defense: 0,
-        spatk: 0,
-        spdef: 0,
-        speed: 0,
-        accuracy: 0,
-        evasion: 0
-    })
+    const EVsLeft = useSelector((state) => state.evs.EVsLeft)
+    const EVsRight = useSelector((state) => state.evs.EVsRight)
+
+    const IVsLeft = useSelector((state) => state.ivs.IVsLeft)
+    const IVsRight = useSelector((state) => state.ivs.IVsRight)
 
     const MovePropertiesLeft = useRef({
         power: 0,
@@ -78,42 +43,6 @@ function App() {
         type: '',
         category: '',
         name: ''
-    })
-
-    const EVsLeft = useRef({
-        HP: 0,
-        attack: 0,
-        defense: 0,
-        spatk: 0,
-        spdef: 0,
-        speed: 0,
-    })
-
-    const EVsRight = useRef({
-        HP: 0,
-        attack: 0,
-        defense: 0,
-        spatk: 0,
-        spdef: 0,
-        speed: 0,
-    })
-
-    const IVsLeft = useRef({
-        HP: 0,
-        attack: 0,
-        defense: 0,
-        spatk: 0,
-        spdef: 0,
-        speed: 0,
-    })
-
-    const IVsRight = useRef({
-        HP: 0,
-        attack: 0,
-        defense: 0,
-        spatk: 0,
-        spdef: 0,
-        speed: 0,
     })
 
     const OtherFlagsLeft = useRef({
@@ -139,19 +68,28 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-          {/*<Button onClick={() => console.log(MovePropertiesLeft)} />*/}
-          <Row xs={'3'}>
-              <Col>
-                  <Pokemon PokemonValues={PokemonValuesLeft} StatChanges={StatChangesLeft} MoveProperties={MovePropertiesLeft} EVs={EVsLeft} IVs={IVsLeft} OtherFlags={OtherFlagsLeft.current}/>
-              </Col>
-              <Col>
-                  <UniversalDamageComponents Weather={Weather}/>
-                  <DamageCalculator PokemonValuesLeft={PokemonValuesLeft.current} PokemonValuesRight={PokemonValuesRight.current} StatChangesLeft={StatChangesLeft.current} StatChangesRight={StatChangesRight.current} MovePropertiesLeft={MovePropertiesLeft.current} MovePropertiesRight={MovePropertiesRight.current} EVsLeft={EVsLeft.current} EVsRight={EVsRight.current} IVsLeft={IVsLeft.current} IVsRight={IVsRight.current} OtherFlagsLeft={OtherFlagsLeft.current} OtherFlagsRight={OtherFlagsRight.current} Weather={Weather}/>
-              </Col>
-              <Col>
-                  <Pokemon PokemonValues={PokemonValuesRight} StatChanges={StatChangesRight} MoveProperties={MovePropertiesRight} EVs={EVsRight} IVs={IVsRight} OtherFlags={OtherFlagsRight.current}/>
-              </Col>
-          </Row>
+          <Button onClick={() => console.log(PokemonValuesLeft)}>Click</Button>
+          {/*<Row xs={'3'}>*/}
+          {/*    <Col>*/}
+          {/*        <Pokemon PokemonValues={PokemonValuesLeft} StatChanges={StatChangesLeft} MoveProperties={MovePropertiesLeft} EVs={EVsLeft} IVs={IVsLeft} OtherFlags={OtherFlagsLeft.current}/>*/}
+          {/*    </Col>*/}
+          {/*    <Col>*/}
+          {/*        <UniversalDamageComponents Weather={Weather}/>*/}
+          {/*        <DamageCalculator PokemonValuesLeft={PokemonValuesLeft.current} PokemonValuesRight={PokemonValuesRight.current} StatChangesLeft={StatChangesLeft.current} StatChangesRight={StatChangesRight.current} MovePropertiesLeft={MovePropertiesLeft.current} MovePropertiesRight={MovePropertiesRight.current} EVsLeft={EVsLeft.current} EVsRight={EVsRight.current} IVsLeft={IVsLeft.current} IVsRight={IVsRight.current} OtherFlagsLeft={OtherFlagsLeft.current} OtherFlagsRight={OtherFlagsRight.current} Weather={Weather.current}/>*/}
+          {/*    </Col>*/}
+          {/*    <Col>*/}
+          {/*        <Pokemon PokemonValues={PokemonValuesRight} StatChanges={StatChangesRight} MoveProperties={MovePropertiesRight} EVs={EVsRight} IVs={IVsRight} OtherFlags={OtherFlagsRight.current}/>*/}
+          {/*    </Col>*/}
+          {/*</Row>*/}
+          <PokemonField side={'left'}/>
+          <StatChanges side={'left'}/>
+          <EffortValues side={'left'}/>
+          <IndividualValues side={'left'}/>
+          <MoveField side={'left'} />
+          <CurrentHealth side={'left'} />
+          <AbilityDropdown side={'left'}/>
+          <NatureDropdown side={'left'}/>
+          <ItemField side={'left'} />
       </header>
     </div>
   );

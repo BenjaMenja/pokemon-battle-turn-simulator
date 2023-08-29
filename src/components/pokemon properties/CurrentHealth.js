@@ -1,40 +1,68 @@
-import {Input, InputGroup} from "reactstrap";
+import {Col, Input, InputGroup, Row} from "reactstrap";
 import {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {selectMaxHPLeft, selectMaxHPRight, updateHP, updateSide} from "../../features/pokemon_field/pokemonSlice";
 
 function CurrentHealth(props) {
-    const [curHP, setCurHP] = useState(props.PokemonValues.maxHP)
+
+    const [curHP, setCurHP] = useState(0)
+    const maxHPLeft = useSelector(selectMaxHPLeft)
+    const maxHPRight = useSelector(selectMaxHPRight)
+    const side = useSelector((state) => state.pokemon.side)
+    const dispatch = useDispatch()
 
     useEffect(() => {
+        if (props.side !== side) dispatch(updateSide(props.side))
         if (curHP < 0) {
             setCurHP(0)
-            props.PokemonValues.currentHP = 0
+            dispatch(updateHP(0))
         }
-        if (curHP > props.PokemonValues.maxHP) {
-            setCurHP(props.PokemonValues.maxHP)
-            props.PokemonValues.currentHP = props.PokemonValues.maxHP
+        if (side === 'left') {
+            if (curHP > maxHPLeft) {
+                setCurHP(maxHPLeft)
+                dispatch(updateHP(maxHPLeft))
+            }
         }
-    }, [curHP])
+        if (side === 'right') {
+            if (curHP > maxHPRight) {
+                setCurHP(maxHPRight)
+                dispatch(updateHP(maxHPRight))
+            }
+        }
+    }, [curHP, maxHPLeft, maxHPRight])
 
-    useEffect(() => {
-        console.log(props.PokemonValues.maxHP)
-        if (curHP > props.PokemonValues.maxHP) {
-            setCurHP(props.PokemonValues.maxHP)
-        }
-    }, [props.HPUpdater])
+
 
     return(
         <>
-            <h3>Current Health</h3>
-            <InputGroup>
-                <Input style={{width: '60%', marginLeft: '20%', marginRight: '20%'}} type={"range"} min={'0'} max={props.PokemonValues.maxHP} step={'0.1'} value={curHP} onInput={(e) => {
-                    props.PokemonValues.currentHP = parseFloat(e.currentTarget.value)
-                    setCurHP(parseFloat(e.currentTarget.value))
-                }}></Input>
-                <Input style={{width: '60%', marginLeft: '20%', marginRight: '20%'}} type={"number"} min={'0'} max={props.PokemonValues.maxHP} value={curHP} onInput={(e) => {
-                    props.PokemonValues.currentHP = parseFloat(e.currentTarget.value)
-                    setCurHP(parseFloat(e.currentTarget.value))
-                }}></Input>
-            </InputGroup>
+            <Row xs={'3'}>
+                <Col>
+                    <h2>Current Health</h2>
+                </Col>
+                <Col>
+                    <div className={'justify-content-center'}>
+                        <InputGroup>
+                            {side === 'left' && <><Input type={"range"} min={'0'} max={maxHPLeft} step={'0.1'} value={curHP} onInput={(e) => {
+                                dispatch(updateHP(parseFloat(e.currentTarget.value)))
+                                setCurHP(parseFloat(e.currentTarget.value))
+                            }}></Input>
+                                <Input type={"number"} min={'0'} max={maxHPLeft} value={curHP} onInput={(e) => {
+                                    dispatch(updateHP(parseFloat(e.currentTarget.value)))
+                                    setCurHP(parseFloat(e.currentTarget.value))
+                                }}></Input></>}
+
+                            {side === 'right' && <><Input type={"range"} min={'0'} max={maxHPRight} step={'0.1'} value={curHP} onInput={(e) => {
+                                dispatch(updateHP(parseFloat(e.currentTarget.value)))
+                                setCurHP(parseFloat(e.currentTarget.value))
+                            }}></Input>
+                                <Input type={"number"} min={'0'} max={maxHPRight} value={curHP} onInput={(e) => {
+                                    dispatch(updateHP(parseFloat(e.currentTarget.value)))
+                                    setCurHP(parseFloat(e.currentTarget.value))
+                                }}></Input></>}
+                        </InputGroup>
+                    </div>
+                </Col>
+            </Row>
         </>
     )
 }

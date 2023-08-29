@@ -1,10 +1,16 @@
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from "reactstrap";
 import {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {updateNature, updateSide} from "../../features/pokemon_field/pokemonSlice";
 
 function NatureDropdown(props) {
     const [nature, setNature] = useState('')
     const [open, setOpen] = useState(false)
-    const toggle = () => {setOpen(prevState => (!prevState))}
+    const side = useSelector((state) => state.pokemon.side)
+    const toggle = () => {
+        setOpen(prevState => (!prevState))
+        if (props.side !== side) dispatch(updateSide(props.side))
+    }
     const natures = [
         'Hardy',
         'Lonely',
@@ -33,9 +39,11 @@ function NatureDropdown(props) {
         'Quirky'
     ]
 
+    const dispatch = useDispatch()
+
     const mapNatures = () => (natures.map((heading, index) => <DropdownItem onClick={() => {
         setNature(heading)
-        props.PokemonValues.current.nature = heading
+        dispatch(updateNature(heading))
     }}>{heading}</DropdownItem>))
     return (
         <>

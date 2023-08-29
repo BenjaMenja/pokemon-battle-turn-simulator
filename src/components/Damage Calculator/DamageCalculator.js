@@ -4,13 +4,12 @@ import {Button} from "reactstrap";
 function CalculateBasicDamage(PokemonValues, MoveProperties, StatChanges, EVs, IVs, Flags, OtherPokemonValues, OtherMoveProperties, OtherStatChanges, OtherEVs, OtherIVs, OtherFlags, Weather) {
     let effectiveAttack = calculateEffectiveAttack(MoveProperties, PokemonValues, StatChanges, EVs, IVs)
     let effectiveDefense = calculateEffectiveDefense(MoveProperties, PokemonValues, OtherPokemonValues, OtherStatChanges, OtherEVs, OtherIVs)
-    let typeeffectiveness = typeEffectiveness(MoveProperties.type, OtherPokemonValues.type1, OtherPokemonValues.type2)
+    let typeeffectiveness = typeEffectiveness(MoveProperties.type, OtherPokemonValues.type1, OtherPokemonValues.type2, MoveProperties.name)
     let STAB = SameTypeAttackBonus(PokemonValues.type1, PokemonValues.type2, MoveProperties.type, PokemonValues.ability)
     let crit = (() => {return (PokemonValues.isCriticalHit ? 1.5 : 1)})()
     let burnvalue = burn(PokemonValues.burned, PokemonValues.ability, MoveProperties.category, MoveProperties.name)
-    let weatherBoost = WeatherEffects(Weather.current, PokemonValues.ability, OtherPokemonValues.ability, MoveProperties.type, MoveProperties.name)
+    let weatherBoost = WeatherEffects(Weather, PokemonValues.ability, OtherPokemonValues.ability, MoveProperties.type, MoveProperties.name)
     let other = (() => {
-        console.log(OtherFlags)
         let multiplier = 1
         if (OtherFlags.minimize && (["Body Slam", "Stomp", "Dragon Rush", "Heat Crash", "Heavy Slam", "Flying Press"].includes(MoveProperties.name))) {
             multiplier *= 2
@@ -27,7 +26,6 @@ function CalculateBasicDamage(PokemonValues, MoveProperties, StatChanges, EVs, I
             }
         }
         if (OtherFlags.reflect) {
-            console.log(MoveProperties.category + " " + PokemonValues.isCriticalHit + " " + PokemonValues.ability)
             if (MoveProperties.category === "physical" && !PokemonValues.isCriticalHit && (PokemonValues.ability !== "Infiltrator")) {
                 multiplier *= 0.5
             }
@@ -76,7 +74,6 @@ function CalculateBasicDamage(PokemonValues, MoveProperties, StatChanges, EVs, I
         if (PokemonValues.item === "Life Orb") {
             multiplier *= (5324/4096) // 1.3
         }
-        console.log(multiplier)
         return multiplier
     })()
 
@@ -175,7 +172,7 @@ function calculateEffectiveDefense(MoveProperties, OtherPokemonValues, PokemonVa
     return (Math.floor((Math.floor(((2 * baseStat + IV + Math.floor(EV / 4)) * PokemonValues.level) / 100) + 5) * defenseNatureMult) * defenseStatChange)
 }
 
-function typeEffectiveness(MoveType, OtherType1, OtherType2) {
+function typeEffectiveness(MoveType, OtherType1, OtherType2, MoveName) {
     let effectiveness = 1
     switch (MoveType) {
         case "normal":
@@ -394,6 +391,14 @@ function typeEffectiveness(MoveType, OtherType1, OtherType2) {
             }
             break
         case "ice":
+            if (MoveName === "Freeze Dry") {
+                if (["water", "flying", "ground", "grass", "dragon"].includes(OtherType1)) {
+                    effectiveness *= 2
+                }
+                if (["water", "flying", "ground", "grass", "dragon"].includes(OtherType2)) {
+                    effectiveness *= 2
+                }
+            }
             if (["flying", "ground", "grass", "dragon"].includes(OtherType1)) {
                 effectiveness *= 2
             }
@@ -466,24 +471,32 @@ function WeatherEffects(Weather, PokemonAbility, OtherPokemonAbility, MoveType, 
     let weatherboost = 1
     let weatherAbilities = ["Air Lock", "Cloud Nine"]
     if (weatherAbilities.includes(PokemonAbility) || weatherAbilities.includes(OtherPokemonAbility)) return weatherboost
-    if (Weather === "Rain") {
+    if (Weather === "Rain" || Weather === "Heavy Rain") {
         if (MoveType === "water") {
             weatherboost = 1.5
         } else if (MoveType === "fire") {
-            weatherboost = 0.5
+            if (Weather === "Rain") {
+                weatherboost = 0.5
+            }
+            else if (Weather === "Heavy Rain") {
+                weatherboost = 0
+            }
         }
     }
-    if (Weather === "Harsh Sunlight") {
+    if (Weather === "Harsh Sunlight" || Weather === "Extremely Harsh Sunlight") {
         if (MoveType === "fire") {
             weatherboost = 1.5
         } else if (MoveType === "water") {
             if (MoveName === "Hydro Steam") {
                 weatherboost = 1.5
+            } else if (Weather === "Extremely Harsh Sunlight") {
+                weatherboost = 0
             } else {
                 weatherboost = 0.5
             }
         }
     }
+
     return weatherboost
 }
 
@@ -498,13 +511,16 @@ function burn(BurnStatus, Ability, MoveCategory, MoveName) {
 
 function DamageCalculator(props) {
     let [DamageDealt, setDamageDealt] = useState(0)
+    let weather = props.Weather
     return (
         <>
+            <Button onClick={() => {console.log(props)}} >Weather</Button>
             <Button onClick={() => {
-                setDamageDealt(CalculateBasicDamage(props.PokemonValuesLeft, props.MovePropertiesLeft, props.StatChangesLeft, props.EVsLeft, props.IVsLeft, props.OtherFlagsLeft, props.PokemonValuesRight, props.MovePropertiesRight, props.StatChangesRight, props.EVsRight, props.IVsRight, props.OtherFlagsRight, props.Weather))
+                setDamageDealt(CalculateBasicDamage(props.PokemonValuesLeft, props.MovePropertiesLeft, props.StatChangesLeft, props.EVsLeft, props.IVsLeft, props.OtherFlagsLeft, props.PokemonValuesRight, props.MovePropertiesRight, props.StatChangesRight, props.EVsRight, props.IVsRight, props.OtherFlagsRight, weather))
             }}>
                 Calculate
             </Button>
+
             <h1><u>Damage Dealt</u></h1>
             <h2>{(DamageDealt * 0.85).toFixed(2)}-{DamageDealt}</h2>
 

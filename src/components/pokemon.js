@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Button, Col, Row} from "reactstrap";
+import {Col, Row} from "reactstrap";
 import MoveField from "./pokemon properties/movefield";
 import EffortValues from "./pokemon properties/EffortValues";
 import IndividualValues from "./pokemon properties/IndividualValues";
@@ -13,30 +13,43 @@ import StatChanges from "./other damage components/StatChanges";
 import NatureDropdown from "./pokemon properties/NatureDropdown";
 import OtherFlags from "./other damage components/OtherFlags";
 import CurrentHealth from "./pokemon properties/CurrentHealth";
+import {Tab, Tabs, TabList, TabPanel} from "react-tabs";
 
 function Pokemon(props) {
     const [pokemonData, setPokemonData] = useState()
-    const [visibleValues, setVisibleValues] = useState(false)
-    const toggle = () => setVisibleValues((prevState) => !prevState)
     const [HPUpdater, SetHPUpdater] = useState(false)
 
     return (
         <>
-            <PokemonField setData={setPokemonData} PokemonValues={props.PokemonValues.current} EVs={props.EVs.current} IVs={props.IVs.current}/>
-            <MoveField moveData={pokemonData} MoveProperties={props.MoveProperties}/>
-            <CurrentHealth PokemonValues={props.PokemonValues.current} HPUpdater={HPUpdater} SetHPUpdater={SetHPUpdater}/>
-            <Button onClick={toggle} color={'primary'}>EV / IV Values</Button>
-            {visibleValues && <Row xs={'2'}>
+            <Row xs={'2'} style={{paddingBottom: '1rem'}}>
                 <Col>
+                    <PokemonField setData={setPokemonData} PokemonValues={props.PokemonValues.current} EVs={props.EVs.current} IVs={props.IVs.current}/>
+                </Col>
+                <Col>
+                    <MoveField moveData={pokemonData} MoveProperties={props.MoveProperties}/>
+                </Col>
+            </Row>
+
+            <Tabs style={{marginBottom: '1rem'}}>
+                <TabList>
+                    <Tab>EVs</Tab>
+                    <Tab>IVs</Tab>
+                    <Tab>Stat Changes</Tab>
+                </TabList>
+                <TabPanel>
                     <EffortValues EVs={props.EVs.current} PokemonValues={props.PokemonValues.current} IVs={props.IVs.current} HPUpdater={HPUpdater} SetHPUpdater={SetHPUpdater}/>
-                </Col>
-                <Col>
+                </TabPanel>
+                <TabPanel>
                     <IndividualValues IVs={props.IVs.current} EVs={props.EVs.current} PokemonValues={props.PokemonValues.current} HPUpdater={HPUpdater} SetHPUpdater={SetHPUpdater} />
-                </Col>
-            </Row>}
+                </TabPanel>
+                <TabPanel>
+                    <StatChanges StatChanges={props.StatChanges.current} />
+                </TabPanel>
+            </Tabs>
+
+            <CurrentHealth PokemonValues={props.PokemonValues.current} HPUpdater={HPUpdater} SetHPUpdater={SetHPUpdater}/>
             <AbilityDropdown pokemonData={pokemonData} PokemonValues={props.PokemonValues} />
             <NatureDropdown PokemonValues={props.PokemonValues} />
-            <StatChanges StatChanges={props.StatChanges} />
             <ItemField PokemonValues={props.PokemonValues} />
             <Level PokemonValues={props.PokemonValues.current} EVs={props.EVs.current} IVs={props.IVs.current} HPUpdater={HPUpdater} SetHPUpdater={SetHPUpdater} />
             <Row xs={'2'}>
