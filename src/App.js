@@ -14,6 +14,8 @@ import CurrentHealth from "./components/pokemon properties/CurrentHealth";
 import AbilityDropdown from "./components/pokemon properties/AbilityDropdown";
 import NatureDropdown from "./components/pokemon properties/NatureDropdown";
 import ItemField from "./components/pokemon properties/ItemField";
+import Level from "./components/other damage components/level";
+import OtherFlags from "./components/other damage components/OtherFlags";
 
 function App() {
 
@@ -90,6 +92,8 @@ function App() {
           <AbilityDropdown side={'left'}/>
           <NatureDropdown side={'left'}/>
           <ItemField side={'left'} />
+          <Level side={'left'} />
+          <OtherFlags side={'left'} />
       </header>
     </div>
   );

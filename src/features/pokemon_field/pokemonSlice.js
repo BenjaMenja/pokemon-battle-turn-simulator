@@ -19,8 +19,6 @@ const initialState = {
         ability: '',
         item: '',
         nature: '',
-        isCriticalHit: false,
-        burned: false,
         currentHP: 0,
         maxHP: 0
     },
@@ -173,9 +171,17 @@ export const pokemonSlice = createSlice({
             if (state.side === 'right') {
                 state.PokemonValuesRight.nature = action.payload
             }
+        },
+        updateLevel(state, action) {
+            if (state.side === 'left') {
+                state.PokemonValuesLeft.level = action.payload
+            }
+            if (state.side === 'right') {
+                state.PokemonValuesRight.level = action.payload
+            }
         }
     }
 })
-export const {updateSide, updateHP, updateAbility, updateNature} = pokemonSlice.actions
+export const {updateSide, updateHP, updateAbility, updateNature, updateLevel} = pokemonSlice.actions
 
 export default pokemonSlice.reducer

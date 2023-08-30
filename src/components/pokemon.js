@@ -5,8 +5,6 @@ import EffortValues from "./pokemon properties/EffortValues";
 import IndividualValues from "./pokemon properties/IndividualValues";
 import ItemField from "./pokemon properties/ItemField";
 import Level from "./other damage components/level";
-import CriticalHit from "./other damage components/criticalhit";
-import Burned from "./other damage components/burned";
 import PokemonField from "./pokemon properties/PokemonField";
 import AbilityDropdown from "./pokemon properties/AbilityDropdown";
 import StatChanges from "./other damage components/StatChanges";
@@ -52,14 +50,6 @@ function Pokemon(props) {
             <NatureDropdown PokemonValues={props.PokemonValues} />
             <ItemField PokemonValues={props.PokemonValues} />
             <Level PokemonValues={props.PokemonValues.current} EVs={props.EVs.current} IVs={props.IVs.current} HPUpdater={HPUpdater} SetHPUpdater={SetHPUpdater} />
-            <Row xs={'2'}>
-                <Col>
-                    <CriticalHit PokemonValues={props.PokemonValues} />
-                </Col>
-                <Col>
-                    <Burned PokemonValues={props.PokemonValues} />
-                </Col>
-            </Row>
             <OtherFlags OtherFlags={props.OtherFlags}/>
         </>
     )
