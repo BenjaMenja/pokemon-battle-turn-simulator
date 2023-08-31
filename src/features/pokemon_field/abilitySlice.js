@@ -11,7 +11,7 @@ export const abilitySlice = createSlice({
     name: 'abilities',
     initialState,
     reducers: {
-        updateSide(state, action) {
+        updateAbilitySide(state, action) {
             state.side = action.payload
         }
     },
@@ -27,6 +27,6 @@ export const abilitySlice = createSlice({
     }
 })
 
-export const {updateSide} = abilitySlice.actions
+export const {updateAbilitySide} = abilitySlice.actions
 
 export default abilitySlice.reducer

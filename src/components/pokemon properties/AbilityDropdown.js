@@ -2,7 +2,7 @@ import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from "reactstrap";
 import {useEffect, useRef, useState} from "react";
 import {uppercaseFormat} from "../../utils/utilities";
 import {useDispatch, useSelector} from "react-redux";
-import {updateSide} from "../../features/pokemon_field/abilitySlice";
+import {updateAbilitySide} from "../../features/pokemon_field/abilitySlice";
 import {updateAbility} from "../../features/pokemon_field/pokemonSlice";
 
 function GetAbilityNames(abilities) {
@@ -34,12 +34,11 @@ function AbilityDropdown(props) {
 
     useEffect(() => {
         setAbility('')
-        if (props.side !== side) dispatch(updateSide(props.side))
-        if (side === 'left' && abilitiesLeft.length > 0) {
+        if (props.side === 'left' && abilitiesLeft.length > 0) {
             abilityNames.current = GetAbilityNames(abilitiesLeft)
             uppercaseAbilityArray.current = uppercaseAbilities(abilityNames.current)
         }
-        if (side === 'right' && abilitiesRight.length > 0) {
+        if (props.side === 'right' && abilitiesRight.length > 0) {
             abilityNames.current = GetAbilityNames(abilitiesRight)
             uppercaseAbilityArray.current = uppercaseAbilities(abilityNames.current)
         }
@@ -47,6 +46,7 @@ function AbilityDropdown(props) {
 
     const toggleDropdown = () => setDropdownOpen((prevState) => !prevState)
     const mapabilities = () => (uppercaseAbilityArray.current.length === 0) ? null : uppercaseAbilityArray.current.map((heading, index) => <DropdownItem onClick={() => {
+        if (props.side !== side) dispatch(updateAbilitySide(props.side))
         setAbility(heading)
         dispatch(updateAbility(heading))
     }}>{heading}</DropdownItem>)

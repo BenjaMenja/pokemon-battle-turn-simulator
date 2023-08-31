@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from "react";
-import {Form, Input} from "reactstrap";
+import {Input} from "reactstrap";
 import MoveDropdown from "./movedropdown";
 import {useSelector} from "react-redux";
 
@@ -35,16 +35,15 @@ function MoveField(props) {
     const [moveInput, setMoveInput] = useState("")
     const [updater, setUpdater] = useState(false)
     const uppercaseMoves = useRef([])
-    const side = useSelector((state) => state.moveField.side)
     const moveListLeft = useSelector((state) => state.moveField.moveListLeft)
     const moveListRight = useSelector((state) => state.moveField.moveListRight)
 
     useEffect(() => {
         setMoveInput("")
-        if (side === 'left' && moveListLeft.length > 0) {
+        if (props.side === 'left' && moveListLeft.length > 0) {
             matchingMoves.current = filterFunction(moveListLeft, "")
         }
-        if (side === 'right' && moveListRight.length > 0) {
+        if (props.side === 'right' && moveListRight.length > 0) {
             matchingMoves.current = filterFunction(moveListRight, "")
         }
         uppercaseMoves.current = uppercaseMoveset(matchingMoves.current)
@@ -57,15 +56,15 @@ function MoveField(props) {
             <div className={'d-flex'}>
                 <Input type={"text"} value={moveInput} placeholder={"Move Search"} style={{width: '75%', marginLeft: '12.5%'}} onChange={(e) => {
                     setMoveInput(e.currentTarget.value)
-                    if (side === 'left' && moveListLeft.length > 0) {
+                    if (props.side === 'left' && moveListLeft.length > 0) {
                         matchingMoves.current = filterFunction(moveListLeft, e.currentTarget.value.toLowerCase().replace(/ /g, "-"))
                     }
-                    if (side === 'right' && moveListRight.length > 0) {
+                    if (props.side === 'right' && moveListRight.length > 0) {
                         matchingMoves.current = filterFunction(moveListRight, e.currentTarget.value.toLowerCase().replace(/ /g, "-"))
                     }
                     uppercaseMoves.current = uppercaseMoveset(matchingMoves.current)
                 }}></Input>
-                <MoveDropdown moves={uppercaseMoves.current} setMoveInput={setMoveInput} updater={updater} setUpdater={setUpdater}/>
+                <MoveDropdown moves={uppercaseMoves.current} setMoveInput={setMoveInput} updater={updater} setUpdater={setUpdater} side={props.side}/>
             </div>
 
         </>

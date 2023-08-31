@@ -511,7 +511,8 @@ function burn(BurnStatus, Ability, MoveCategory, MoveName) {
 
 
 function DamageCalculator(props) {
-    let [DamageDealt, setDamageDealt] = useState(0)
+    const [DamageDealt, setDamageDealt] = useState(0)
+    const [OtherDamageDealt, setOtherDamageDealt] = useState(0)
     const PokemonValuesLeft = useSelector((state) => state.pokemon.PokemonValuesLeft)
     const PokemonValuesRight = useSelector((state) => state.pokemon.PokemonValuesRight)
     const MovePropertiesLeft = useSelector((state) => state.moveField.movePropertiesLeft)
@@ -530,13 +531,14 @@ function DamageCalculator(props) {
         <>
             <Button onClick={() => {
                 setDamageDealt(CalculateBasicDamage(PokemonValuesLeft, MovePropertiesLeft, StatChangesLeft, EVsLeft, IVsLeft, OtherFlagsLeft, PokemonValuesRight, MovePropertiesRight, StatChangesRight, EVsRight, IVsRight, OtherFlagsRight, Weather, Terrain))
+                setOtherDamageDealt(CalculateBasicDamage(PokemonValuesRight, MovePropertiesRight, StatChangesRight, EVsRight, IVsRight, OtherFlagsRight, PokemonValuesLeft, MovePropertiesLeft, StatChangesLeft, EVsLeft, IVsLeft, OtherFlagsLeft, Weather, Terrain))
             }}>
                 Calculate
             </Button>
 
             <h1><u>Damage Dealt</u></h1>
             <h2>{(DamageDealt * 0.85).toFixed(2)}-{DamageDealt}</h2>
-
+            <h2>{(OtherDamageDealt * 0.85).toFixed(2)}-{OtherDamageDealt}</h2>
         </>
     )
 }

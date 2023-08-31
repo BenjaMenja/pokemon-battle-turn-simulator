@@ -35,15 +35,7 @@ export const moveFieldSlice = createSlice({
     name: 'moveField',
     initialState,
     reducers: {
-        updateMoveList(state, action) {
-          if (state.side === 'left') {
-              state.moveListLeft = action.payload
-          }
-          if (state.side === 'right') {
-              state.moveListRight = action.payload
-          }
-        },
-        updateSide(state, action) {
+        updateMoveSide(state, action) {
             state.side = action.payload
         }
     },
@@ -105,5 +97,5 @@ export const moveFieldSlice = createSlice({
     }
 })
 
-export const {updateMoveList, updateSide} = moveFieldSlice.actions
+export const {updateMoveSide} = moveFieldSlice.actions
 export default moveFieldSlice.reducer
