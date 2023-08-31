@@ -1,5 +1,7 @@
 import {useState} from "react";
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from "reactstrap";
+import {useDispatch} from "react-redux";
+import {updateWeather} from "../../features/environment/environmentSlice";
 
 
 function WeatherInput(props) {
@@ -7,6 +9,7 @@ function WeatherInput(props) {
     const [weather, setWeather] = useState("None")
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const toggleDropdown = () => setDropdownOpen((prevState) => !prevState)
+    const dispatch = useDispatch()
     let weathers = ["None", "Rain", "Harsh Sunlight", "Sandstorm", "Snow", "Extremely Harsh Sunlight", "Heavy Rain", "Strong Winds"]
     return (
         <>
@@ -18,7 +21,7 @@ function WeatherInput(props) {
                 <DropdownMenu>
                     {weathers.map((heading, index) => <DropdownItem onClick={() => {
                         setWeather(heading)
-                        props.Weather.current = heading
+                        dispatch(updateWeather(heading))
                     }}>{heading}</DropdownItem>)}
                 </DropdownMenu>
             </Dropdown>

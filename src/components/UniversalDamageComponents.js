@@ -2,12 +2,12 @@ import WeatherInput from "./Universal Damage Components/Weather";
 import TerrainInput from "./Universal Damage Components/Terrain";
 import {Col, Row} from "reactstrap";
 
-function UniversalDamageComponents(props) {
+function UniversalDamageComponents() {
     return (
         <>
             <Row xs={'2'}>
                 <Col>
-                    <WeatherInput Weather={props.Weather}/>
+                    <WeatherInput />
                 </Col>
                 <Col>
                     <TerrainInput />

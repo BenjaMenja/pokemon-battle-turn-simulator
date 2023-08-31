@@ -12,7 +12,6 @@ function CurrentHealth(props) {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (props.side !== side) dispatch(updateSide(props.side))
         if (curHP < 0) {
             setCurHP(0)
             dispatch(updateHP(0))
@@ -31,8 +30,6 @@ function CurrentHealth(props) {
         }
     }, [curHP, maxHPLeft, maxHPRight])
 
-
-
     return(
         <>
             <Row xs={'3'}>
@@ -43,19 +40,23 @@ function CurrentHealth(props) {
                     <div className={'justify-content-center'}>
                         <InputGroup>
                             {side === 'left' && <><Input type={"range"} min={'0'} max={maxHPLeft} step={'0.1'} value={curHP} onInput={(e) => {
+                                if (props.side !== side) dispatch(updateSide(props.side))
                                 dispatch(updateHP(parseFloat(e.currentTarget.value)))
                                 setCurHP(parseFloat(e.currentTarget.value))
                             }}></Input>
                                 <Input type={"number"} min={'0'} max={maxHPLeft} value={curHP} onInput={(e) => {
+                                    if (props.side !== side) dispatch(updateSide(props.side))
                                     dispatch(updateHP(parseFloat(e.currentTarget.value)))
                                     setCurHP(parseFloat(e.currentTarget.value))
                                 }}></Input></>}
 
                             {side === 'right' && <><Input type={"range"} min={'0'} max={maxHPRight} step={'0.1'} value={curHP} onInput={(e) => {
+                                if (props.side !== side) dispatch(updateSide(props.side))
                                 dispatch(updateHP(parseFloat(e.currentTarget.value)))
                                 setCurHP(parseFloat(e.currentTarget.value))
                             }}></Input>
                                 <Input type={"number"} min={'0'} max={maxHPRight} value={curHP} onInput={(e) => {
+                                    if (props.side !== side) dispatch(updateSide(props.side))
                                     dispatch(updateHP(parseFloat(e.currentTarget.value)))
                                     setCurHP(parseFloat(e.currentTarget.value))
                                 }}></Input></>}

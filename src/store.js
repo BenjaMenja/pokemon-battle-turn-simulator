@@ -7,6 +7,7 @@ import moveFieldReducer from './features/moves/moveFieldSlice'
 import abilityReducer from './features/pokemon_field/abilitySlice'
 import itemReducer from './features/items/itemSlice'
 import flagsReducer from './features/pokemon_field/otherFlagsSlice'
+import environmentReducer from './features/environment/environmentSlice'
 import {composeWithDevTools} from "@redux-devtools/extension";
 import thunk from 'redux-thunk'
 
@@ -20,6 +21,7 @@ export const store = configureStore({
         abilities: abilityReducer,
         items: itemReducer,
         otherFlags: flagsReducer,
+        environment: environmentReducer,
         middleware: [thunk, composeWithDevTools]
     }
 })

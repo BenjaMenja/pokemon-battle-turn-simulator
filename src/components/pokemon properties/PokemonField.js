@@ -6,16 +6,18 @@ import {fetchPkmnData, updateSide} from "../../features/pokemon_field/pokemonSli
 function PokemonField(props) {
     const [textValue, setTextValue] = useState("");
     const dispatch = useDispatch()
-    const pokemonData = useSelector((state) => state.pokemon.PokemonValuesLeft.name)
+    const pokemonNameLeft = useSelector((state) => state.pokemon.PokemonValuesLeft.name)
+    const pokemonNameRight = useSelector((state) => state.pokemon.PokemonValuesRight.name)
     const side = useSelector((state) => state.pokemon.side)
-    const sprite = useSelector((state) => state.pokemon.PokemonValuesLeft.spriteData)
+    const spriteLeft = useSelector((state) => state.pokemon.PokemonValuesLeft.spriteData)
+    const spriteRight = useSelector((state) => state.pokemon.PokemonValuesRight.spriteData)
 
     return (
         <>
             <h3>
-                Pokemon Name: {pokemonData}
+                Pokemon Name: {(props.side === 'left') ? pokemonNameLeft : pokemonNameRight}
             </h3>
-            <img alt="" src={sprite} id={"sprite"} />
+            <img alt="" src={(props.side === 'left') ? spriteLeft : spriteRight} id={"sprite"} />
             <input type={"text"} value={textValue} onChange={(e) => {
                 setTextValue(e.currentTarget.value);
             }}></input>

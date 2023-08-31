@@ -1,12 +1,13 @@
 import {useState} from "react";
 import {Button} from "reactstrap";
+import {useSelector} from "react-redux";
 
-function CalculateBasicDamage(PokemonValues, MoveProperties, StatChanges, EVs, IVs, Flags, OtherPokemonValues, OtherMoveProperties, OtherStatChanges, OtherEVs, OtherIVs, OtherFlags, Weather) {
-    let effectiveAttack = calculateEffectiveAttack(MoveProperties, PokemonValues, StatChanges, EVs, IVs)
-    let effectiveDefense = calculateEffectiveDefense(MoveProperties, PokemonValues, OtherPokemonValues, OtherStatChanges, OtherEVs, OtherIVs)
-    let typeeffectiveness = typeEffectiveness(MoveProperties.type, OtherPokemonValues.type1, OtherPokemonValues.type2, MoveProperties.name)
-    let STAB = SameTypeAttackBonus(PokemonValues.type1, PokemonValues.type2, MoveProperties.type, PokemonValues.ability)
-    let crit = (() => {return (PokemonValues.isCriticalHit ? 1.5 : 1)})()
+function CalculateBasicDamage(PokemonValues, MoveProperties, StatChanges, EVs, IVs, Flags, OtherPokemonValues, OtherMoveProperties, OtherStatChanges, OtherEVs, OtherIVs, OtherFlags, Weather, Terrain) {
+    let effectiveAttack = calculateEffectiveAttack(MoveProperties, PokemonValues, StatChanges, EVs, IVs, Flags)
+    let effectiveDefense = calculateEffectiveDefense(MoveProperties, PokemonValues, OtherPokemonValues, OtherStatChanges, OtherEVs, OtherIVs, OtherFlags)
+    let typeeffectiveness = typeEffectiveness(MoveProperties.type, OtherPokemonValues.type, OtherPokemonValues.type2, MoveProperties.name)
+    let STAB = SameTypeAttackBonus(PokemonValues.type, PokemonValues.type2, MoveProperties.type, PokemonValues.ability)
+    let crit = (() => {return (Flags.isCriticalHit ? 1.5 : 1)})()
     let burnvalue = burn(PokemonValues.burned, PokemonValues.ability, MoveProperties.category, MoveProperties.name)
     let weatherBoost = WeatherEffects(Weather, PokemonValues.ability, OtherPokemonValues.ability, MoveProperties.type, MoveProperties.name)
     let other = (() => {
@@ -21,17 +22,17 @@ function CalculateBasicDamage(PokemonValues, MoveProperties, StatChanges, EVs, I
             multiplier *= 2
         }
         if (OtherFlags.lightscreen) {
-            if (MoveProperties.category === "special" && !PokemonValues.isCriticalHit && (PokemonValues.ability !== "Infiltrator")) {
+            if (MoveProperties.category === "special" && !Flags.isCriticalHit && (PokemonValues.ability !== "Infiltrator")) {
                 multiplier *= 0.5
             }
         }
         if (OtherFlags.reflect) {
-            if (MoveProperties.category === "physical" && !PokemonValues.isCriticalHit && (PokemonValues.ability !== "Infiltrator")) {
+            if (MoveProperties.category === "physical" && !Flags.isCriticalHit && (PokemonValues.ability !== "Infiltrator")) {
                 multiplier *= 0.5
             }
         }
         if (OtherFlags.auroraveil) {
-            if (!PokemonValues.isCriticalHit && (PokemonValues.ability !== "Infiltrator")) {
+            if (!Flags.isCriticalHit && (PokemonValues.ability !== "Infiltrator")) {
                 multiplier *= 0.5
             }
         }
@@ -81,7 +82,7 @@ function CalculateBasicDamage(PokemonValues, MoveProperties, StatChanges, EVs, I
 
 }
 
-function calculateEffectiveAttack(MoveProperties, PokemonValues, StatChanges, EVs, IVs) {
+function calculateEffectiveAttack(MoveProperties, PokemonValues, StatChanges, EVs, IVs, Flags) {
     let attackNatureMult = 1.0
     let EV
     let IV
@@ -99,7 +100,7 @@ function calculateEffectiveAttack(MoveProperties, PokemonValues, StatChanges, EV
         baseStat = PokemonValues.attack
         if (StatChanges.attack >= 0) {
             attackStatChange = ((StatChanges.attack + 2) / 2)
-        } else if (!PokemonValues.isCriticalHit) {
+        } else if (!Flags.isCriticalHit) {
             attackStatChange = (2 / (Math.abs(StatChanges.attack) + 2))
         }
     }
@@ -114,7 +115,7 @@ function calculateEffectiveAttack(MoveProperties, PokemonValues, StatChanges, EV
         baseStat = PokemonValues.spatk
         if (StatChanges.spatk >= 0) {
             attackStatChange = ((StatChanges.spatk + 2) / 2)
-        } else if (!PokemonValues.isCriticalHit) {
+        } else if (!Flags.isCriticalHit) {
             attackStatChange = (2 / (Math.abs(StatChanges.spatk) + 2))
         }
     }
@@ -122,7 +123,7 @@ function calculateEffectiveAttack(MoveProperties, PokemonValues, StatChanges, EV
     return (Math.floor((Math.floor(((2 * baseStat + IV + Math.floor(EV / 4)) * PokemonValues.level) / 100) + 5) * attackNatureMult) * attackStatChange)
 }
 
-function calculateEffectiveDefense(MoveProperties, OtherPokemonValues, PokemonValues, StatChanges, EVs, IVs) {
+function calculateEffectiveDefense(MoveProperties, OtherPokemonValues, PokemonValues, StatChanges, EVs, IVs, OtherFlags) {
     let defenseNatureMult = 1.0
     let EV
     let IV
@@ -139,7 +140,7 @@ function calculateEffectiveDefense(MoveProperties, OtherPokemonValues, PokemonVa
         IV = IVs.defense
         baseStat = PokemonValues.defense
         if (StatChanges.defense >= 0) {
-            if (!OtherPokemonValues.isCriticalHit) {
+            if (!OtherFlags.isCriticalHit) {
                 defenseStatChange = ((StatChanges.defense + 2) / 2)
             } else {
                 defenseStatChange = 1
@@ -158,7 +159,7 @@ function calculateEffectiveDefense(MoveProperties, OtherPokemonValues, PokemonVa
         IV = IVs.spdef
         baseStat = PokemonValues.spdef
         if (StatChanges.spdef >= 0) {
-            if (!OtherPokemonValues.isCriticalHit) {
+            if (!OtherFlags.isCriticalHit) {
                 defenseStatChange = ((StatChanges.spdef + 2) / 2)
             }
             else {
@@ -511,12 +512,24 @@ function burn(BurnStatus, Ability, MoveCategory, MoveName) {
 
 function DamageCalculator(props) {
     let [DamageDealt, setDamageDealt] = useState(0)
-    let weather = props.Weather
+    const PokemonValuesLeft = useSelector((state) => state.pokemon.PokemonValuesLeft)
+    const PokemonValuesRight = useSelector((state) => state.pokemon.PokemonValuesRight)
+    const MovePropertiesLeft = useSelector((state) => state.moveField.movePropertiesLeft)
+    const MovePropertiesRight = useSelector((state) => state.moveField.movePropertiesRight)
+    const StatChangesLeft = useSelector((state) => state.statChanges.StatChangesLeft)
+    const StatChangesRight = useSelector((state) => state.statChanges.StatChangesRight)
+    const EVsLeft = useSelector((state) => state.evs.EVsLeft)
+    const EVsRight = useSelector((state) => state.evs.EVsRight)
+    const IVsLeft = useSelector((state) => state.ivs.IVsLeft)
+    const IVsRight = useSelector((state) => state.ivs.IVsRight)
+    const OtherFlagsLeft = useSelector((state) => state.otherFlags.otherFlagsLeft)
+    const OtherFlagsRight = useSelector((state) => state.otherFlags.otherFlagsRight)
+    const Weather = useSelector((state) => state.environment.weather)
+    const Terrain = useSelector((state) => state.environment.terrain)
     return (
         <>
-            <Button onClick={() => {console.log(props)}} >Weather</Button>
             <Button onClick={() => {
-                setDamageDealt(CalculateBasicDamage(props.PokemonValuesLeft, props.MovePropertiesLeft, props.StatChangesLeft, props.EVsLeft, props.IVsLeft, props.OtherFlagsLeft, props.PokemonValuesRight, props.MovePropertiesRight, props.StatChangesRight, props.EVsRight, props.IVsRight, props.OtherFlagsRight, weather))
+                setDamageDealt(CalculateBasicDamage(PokemonValuesLeft, MovePropertiesLeft, StatChangesLeft, EVsLeft, IVsLeft, OtherFlagsLeft, PokemonValuesRight, MovePropertiesRight, StatChangesRight, EVsRight, IVsRight, OtherFlagsRight, Weather, Terrain))
             }}>
                 Calculate
             </Button>
